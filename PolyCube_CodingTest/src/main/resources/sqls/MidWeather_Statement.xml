@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.min.edu.mapper.IMidWeatherDao">
+
+<!-- TODO PCCT01_01 -->
+<insert id="insertMidWeather" parameterType="MidForecastVo">
+	INSERT INTO MID_FORECAST
+		(SEQ, regId, rnSt3Am,
+		 rnSt3Pm, rnSt4Am, rnSt4Pm,
+		  rnSt5Am, rnSt5Pm, rnSt6Am,
+		   rnSt6Pm, rnSt7Am, rnSt7Pm,
+		    rnSt8, rnSt9, rnSt10,
+		     wf3Am, wf3Pm, wf4Am,
+		      wf4Pm, wf5Am, wf5Pm,
+		       wf6Am, wf6Pm, wf7Am,
+		        wf7Pm, wf8, wf9,
+		         wf10)
+		VALUES((SELECT IFNULL(MAX(SEQ),0)+1 FROM M_SEQ_TABLE), #{regId}, #{rnSt3Am},
+				 #{rnSt3Pm},#{rnSt4Am}, #{rnSt4Pm},
+				  #{rnSt5Am}, #{rnSt5Pm}, #{rnSt6Am},
+				  #{rnSt6Pm}, #{rnSt7Am}, #{rnSt7Pm},
+				   #{rnSt8}, #{rnSt9}, #{rnSt10},
+				    #{wf3Am}, #{wf3Pm}, #{wf4Am},
+				     #{wf4Pm}, #{wf5Am}, #{wf5Pm},
+				      #{wf6Am}, #{wf6Pm}, #{wf7Am},
+				       #{wf7Pm}, #{wf8}, #{wf9},
+				        #{wf10})
+</insert>
+
+<!-- TODO PCCT02_01 -->
+<insert id="insertMidSeq">
+	INSERT INTO M_SEQ_TABLE (SELECT IFNULL(MAX(SEQ),0) FROM MID_FORECAST)
+</insert>
+
+<!-- TODO PCCT03_01 -->
+<select id="getMidList" resultType="MidForecastVo">
+	SELECT SEQ, regId, rnSt3Am, rnSt3Pm, rnSt4Am, rnSt4Pm, rnSt5Am, rnSt5Pm, rnSt6Am, rnSt6Pm, rnSt7Am, rnSt7Pm, rnSt8, rnSt9, rnSt10, wf3Am, wf3Pm, wf4Am, wf4Pm, wf5Am, wf5Pm, wf6Am, wf6Pm, wf7Am, wf7Pm, wf8, wf9, wf10
+		FROM MID_FORECAST
+		ORDER BY SEQ
+</select>
+
+<!-- TODO PCCT04_01 -->
+<select id="getMidDetail" parameterType="Integer" resultType="MidForecastVo">
+	SELECT SEQ, regId, rnSt3Am, rnSt3Pm, rnSt4Am, rnSt4Pm, rnSt5Am, rnSt5Pm, rnSt6Am, rnSt6Pm, rnSt7Am, rnSt7Pm, rnSt8, rnSt9, rnSt10, wf3Am, wf3Pm, wf4Am, wf4Pm, wf5Am, wf5Pm, wf6Am, wf6Pm, wf7Am, wf7Pm, wf8, wf9, wf10
+		FROM MID_FORECAST
+		WHERE SEQ = #{seq}
+</select>
+
+
+</mapper>

@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.min.edu.mapper.IShortWeatherDao">
+
+<!-- TODO PCCT05_01 -->
+<select id="getAllSaveList" resultType="ShortForecastVo">
+	SELECT SEQ,baseDate, baseTime, nx, ny
+		FROM SHORT_FORECAST
+		GROUP BY SEQ, baseDate, baseTime, nx, ny
+</select>
+
+<!-- TODO PCCT06_01 -->
+<select id="getSaveDetail" parameterType="Integer" resultType="ShortForecastVo">
+	SELECT SEQ, baseDate, baseTime, category, fcstDate, fcstTime, fcstValue, nx, ny
+		FROM SHORT_FORECAST
+		WHERE SEQ = #{seq}
+</select>
+
+<!-- TODO PCCT07_01 -->
+<insert id="insertWeather" parameterType="ShortForecastVo">
+	INSERT INTO SHORT_FORECAST 
+		(SEQ, baseDate, baseTime,
+		 category, fcstDate, fcstTime,
+		  fcstValue, nx, ny)
+		VALUES((SELECT IFNULL(MAX(SEQ),0)+1 FROM S_SEQ_TABLE),#{baseDate},#{baseTime},
+				#{category},#{fcstDate},#{fcstTime},
+				#{fcstValue},#{nx},#{ny})
+</insert>
+
+<!-- TODO PCCT08_01 -->
+<insert id="insertSeq">
+	INSERT INTO S_SEQ_TABLE (SELECT IFNULL(MAX(SEQ),0) FROM SHORT_FORECAST)
+</insert>
+
+
+</mapper>

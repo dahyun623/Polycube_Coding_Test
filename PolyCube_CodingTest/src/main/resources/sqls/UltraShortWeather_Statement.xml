@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.min.edu.mapper.IUltraShortWeatherDao">
+
+<!-- TODO PCCT09_01 -->
+<select id="getAllUltShrtList" resultType="ShortForecastVo">
+SELECT SEQ,baseDate, baseTime, nx, ny
+		FROM ULTRA_SHORT_FORECAST
+		GROUP BY SEQ,baseDate, baseTime, nx, ny
+</select>
+
+<!-- TODO PCCT10_01 -->
+<select id="getSaveDetail" parameterType="Integer" resultType="ShortForecastVo">
+	SELECT SEQ, baseDate, baseTime, category, fcstDate, fcstTime, fcstValue, nx, ny
+		FROM ULTRA_SHORT_FORECAST
+		WHERE SEQ = #{seq}
+</select>
+
+<!-- TODO PCCT11_01 -->
+<insert id="insertUltrShrt" parameterType="ShortForecastVo">
+	INSERT INTO ULTRA_SHORT_FORECAST 
+		(SEQ, baseDate, baseTime,
+		 category, fcstDate, fcstTime,
+		  fcstValue, nx, ny)
+		VALUES((SELECT IFNULL(MAX(SEQ),0)+1 FROM US_SEQ_TABLE),#{baseDate},#{baseTime},
+				#{category},#{fcstDate},#{fcstTime},
+				#{fcstValue},#{nx},#{ny})
+</insert>
+
+<!-- TODO PCCT12_01 -->
+<insert id="insertSeq">
+	INSERT INTO US_SEQ_TABLE (SELECT IFNULL(MAX(SEQ),0) FROM ULTRA_SHORT_FORECAST)
+</insert>
+
+
+
+</mapper>
